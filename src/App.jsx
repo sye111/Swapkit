@@ -813,7 +813,7 @@ export default function App(){
         </div>
       </div>
       <BottomBar>
-        {selected.userId===uid
+        {selected.userId===uid||selected.userId===localStorage.getItem("sk_uid")
           ?<GBtn onClick={()=>handleDone(selected)}>Mark as done — remove from feed</GBtn>
           :selected.status==="pending"
             ?<div style={{padding:"14px",borderRadius:14,background:C.surface,border:`0.5px solid ${C.border}`,textAlign:"center",fontSize:14,fontWeight:600,color:C.inkMid,fontFamily:F.b}}>⏳ Someone is already in contact</div>
