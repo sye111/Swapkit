@@ -410,8 +410,9 @@ export default function App(){
       .order("created_at",{ascending:false})
       .limit(50);
     if(error){ console.error("fetch error:",error.message); return; }
+    if(data&&data[0]) console.log("USER KEY TEST:", JSON.stringify(Object.keys(data[0])), JSON.stringify(data[0].users), JSON.stringify(data[0]["users!listings_user_id_fkey"]));
     setListings((data||[]).map(l=>{
-      const u = l["users!listings_user_id_fkey"] || {};
+      const u = l["users!listings_user_id_fkey"] || l["users!user_id_fkey"] || l.users || {};
       return {
         id:l.id, status:l.status, img:l.img_url, camp:l.camp,
         platoon:u.platoon||l.platoon, requestedAt:l.requested_at,
