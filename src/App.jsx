@@ -421,27 +421,6 @@ export default function App(){
       };
     }));
   },[]);
-  
-    if(!c){ console.warn("fetchListings: no camp"); return; }
-    const{data,error}=await supabase
-      .from("listings")
-      .select(`id,status,img_url,created_at,camp,platoon,requested_at,
-        listing_items(item,has_size,wants_size),
-        users(id,name,phone,platoon)`)
-      .eq("camp",c)
-      .order("created_at",{ascending:false})
-      .limit(100);
-    if(error){ console.error("fetch error:",error); return; }
-    const mapped=(data||[]).map(l=>({
-      id:l.id, status:l.status, img:l.img_url, camp:l.camp,
-      platoon:l.users?.platoon||l.platoon, requestedAt:l.requested_at,
-      userId:l.users?.id, name:l.users?.name||"Corper", phone:l.users?.phone||"",
-      time:timeAgo(l.created_at),
-      items:(l.listing_items||[]).map(i=>({item:i.item,has:i.has_size,wants:i.wants_size}))
-    }));
-    setListings(mapped);
-    return mapped;
-  },[]);
 
   // ── CHECK FOR MATCHES (new listings that match user's posted wants) ─────────
   // A "match" = someone just posted a listing where their `has` = size I `want`
