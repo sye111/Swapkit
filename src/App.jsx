@@ -398,7 +398,30 @@ export default function App(){
   // It also fetches ALL statuses (not just non-done) so realtime diff works,
   // then filters out "done" for display.
   const fetchListings = useCallback(async(campArg)=>{
-    const c = campArg || campRef.current;
+    const c = campArg || localStorage.getItem("sk_camp") || "";
+    if(!c){ console.warn("fetchListings: no camp"); return; }
+    const{data,error}=await supabase
+      .from("listings")
+      .select(`id,status,img_url,created_at,camp,platoon,requested_at,
+        listing_items(item,has_size,wants_size),
+        users!listings_user_id_fkey(id,name,phone,platoon)`)
+      .eq("camp",c)
+      .neq("status","done")
+      .order("created_at",{ascending:false})
+      .limit(50);
+    if(error){ console.error("fetch error:",error.message); return; }
+    setListings((data||[]).map(l=>{
+      const u = l["users!listings_user_id_fkey"] || {};
+      return {
+        id:l.id, status:l.status, img:l.img_url, camp:l.camp,
+        platoon:u.platoon||l.platoon, requestedAt:l.requested_at,
+        userId:u.id, name:u.name||"Corper", phone:u.phone||"",
+        time:timeAgo(l.created_at),
+        items:(l.listing_items||[]).map(i=>({item:i.item,has:i.has_size,wants:i.wants_size}))
+      };
+    }));
+  },[]);
+  
     if(!c){ console.warn("fetchListings: no camp"); return; }
     const{data,error}=await supabase
       .from("listings")
