@@ -1,0 +1,24 @@
+{
+  "name": "SwapKit",
+  "short_name": "SwapKit",
+  "description": "Swap your NYSC khakis in camp",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2D3A1F",
+  "theme_color": "#2D3A1F",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
